@@ -1,14 +1,23 @@
 <?php
-if (isset($_SERVER['Signature'])) {
-  $inputJSON = file_get_contents('php://input');
-  $input = json_decode($inputJSON, TRUE); //convert JSON into array
+include_once $_SERVER['DOCUMENT_ROOT'] .  '/hmac.php';
 
-  if ($input === null) {
-    print '{"error":"Error decoding json."}';
+if (isset($_SERVER['HTTP_SIGNATURE'])) {
+  $inputJSON = file_get_contents('php://input');
+  $signature = hash_hmac('sha3-512' , $inputJSON , $apiHMAC);
+  if ($signature == $_SERVER['HTTP_SIGNATURE']) {
+    print '{"signature":"match"}';
   }
   else {
-    print '{"error":"false"}';
+    print '{"signature":"no dice"}';
   }
+  //$input = json_decode($inputJSON, TRUE); //convert JSON into array
+
+  //if ($input === null) {
+  //  print '{"error":"Error decoding json."}';
+  //}
+  //else {
+  //  print '{"error":"false"}';
+  //}
 }
 else {
   print '{"error":"Signature missing."}';
