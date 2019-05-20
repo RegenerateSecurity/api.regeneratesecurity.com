@@ -9,7 +9,7 @@ if (isset($_SERVER['HTTP_SIGNATURE'])) {
   }
   else {
     print '{"signature":"no dice"}';
-    print $signature . '<br/>' . $_SERVER['HTTP_SIGNATURE'];
+    print '<br />' . $signature . '<br/>' . $_SERVER['HTTP_SIGNATURE'];
   }
   //$input = json_decode($inputJSON, TRUE); //convert JSON into array
 
