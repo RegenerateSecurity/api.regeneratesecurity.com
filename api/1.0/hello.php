@@ -12,5 +12,6 @@ if (isset($_SERVER['Signature'])) {
 }
 else {
   print '{"error":"Signature missing."}';
+  var_dump($_SERVER);
 }
 ?>
