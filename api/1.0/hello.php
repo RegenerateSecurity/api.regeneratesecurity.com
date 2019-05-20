@@ -7,7 +7,7 @@ if (isset($_SERVER['Signature'])) {
     print '{"error":"Error decoding json."}';
   }
   else {
-    print '{"error":"false"}'
+    print '{"error":"false"}';
   }
 }
 else {
