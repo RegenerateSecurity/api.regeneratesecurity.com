@@ -34,8 +34,8 @@ if (!isset($input['password']) or $input['password'] == "") {
 }
 
 $token    = hash('sha3-512', random_bytes(128));
-$email    = $input['email'])
-$password = $input['password']);
+$email    = $input['email'];
+$password = $input['password'];
 
 // TODO: Consider using numPrepare then execPrepare?
 $result = execPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $email));
