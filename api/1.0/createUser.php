@@ -34,7 +34,7 @@ if (!isset($input['password']) or $input['password'] == "") {
   exit();
 }
 
-if (!filter_var($input['password'], FILTER_VALIDATE_EMAIL)) {
+if (!filter_var($input['username'], FILTER_VALIDATE_EMAIL)) {
   print '{"error":"Invalid email"}';
   exit();
 }
