@@ -54,7 +54,7 @@ $checkhash = hash_pbkdf2('sha3-512', $_POST['password'], $salt , $iter);
 $activity  = time();
 
 if ($hash == $checkhash) {
-  $result = execPrepare($mysqli, "UPDATE users SET session,activity WHERE email = ?;", array("ssi", $email, $token, $activity));
+  $result = execPrepare($mysqli, "UPDATE users SET session = ?, activity = ? WHERE email = ?;", array("sis", $token, $activity, $email));
   print '{"token":"' . $token . '"}';
   exit();
 }
