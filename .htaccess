@@ -12,3 +12,6 @@ RewriteRule ^api\/1.0\/usernameCheck\/$ /api/1.0/usernameCheck.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^api\/1.0\/createUser\/$ /api/1.0/createUser.php [L]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api\/1.0\/authenticateUser\/$ /api/1.0/authenticateUser.php [L]
+

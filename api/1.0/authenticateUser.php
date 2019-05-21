@@ -28,32 +28,38 @@ if (isset($input['username']) or $input['username'] == "") {
   exit();
 }
 
-// TODO: Fix, impose password policy
 if (isset($input['password']) or $input['password'] == "") {
   print '{"error":"Expected password"}';
   exit();
 }
 
-if (!filter_var($input['password'], FILTER_VALIDATE_EMAIL)) {
-  print '{"error":"Invalid email"}';
+$token    = hash('sha3-512', random_bytes(128));
+$email    = $input['email'])
+$password = $input['password']);
+
+// TODO: Consider using numPrepare then execPrepare?
+$result = execPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $email));
+$row = $result->fetch_assoc();
+if ($row['email'] != $email) {
+  print '{"error":"Invalid credentials"}';
   exit();
 }
 
-$email      = $input['username'];
-$password   = $input['password'];
-$salt       = openssl_random_pseudo_bytes(64);
-$iterations = 10000;
-$algo       = 'sha3-512';
-$hash       = hash_pbkdf2($algo, $password, $salt , $iterations);
-$privs      = 0;
+$algo      = $row['algo'];
+$salt      = $row['salt'];
+$iter      = $row['iterations'];
+$hash      = $row['hash'];
+$privs     = $row['privs'];
+$checkhash = hash_pbkdf2('sha3-512', $_POST['password'], $salt , $iter);
+$activity  = time();
 
-// this is overkill but safe; in case of a race condition between checking if the user exists and creating the user.
-if (numPrepare($mysqli, "SELECT email FROM users WHERE email = ?;", array("s", $email)) > 0) {
-  print '{"result":"taken"}';
+if ($hash == $checkhash) {
+  $result = execPrepare($mysqli, "UPDATE users SET session,activity WHERE email = ?;", array("ssi", $email, $token, $activity));
+  print '{"token":"' . $token . '"}';
   exit();
 }
-
-// TODO: Split this for readability
-$result = execPrepare($mysqli, "INSERT INTO users (email, algo, salt, iterations, hash, privs) VALUES (?, ?, ?, ?, ?, ?);", array("sssisi", $email, $algo, $salt, $iterations, $hash, $privs));
-print '{"result":"created"}';
+else {
+  print '{"error":"Invalid credentials"}';
+  exit();
+}
 ?>
