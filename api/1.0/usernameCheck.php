@@ -14,10 +14,10 @@ if (isset($_SERVER['HTTP_SIGNATURE'])) {
     }
     else if (isset($input['username'])) {
       if (numPrepare($mysqli, "SELECT email FROM users WHERE email = ?;", array("s", $input['username'])) > 0) {
-        print '{"username":"taken"}';
+        print '{"result":"taken"}';
       }
       else {
-        print '{"username":"available"}';
+        print '{"result":"available"}';
       }
     }
     else {
