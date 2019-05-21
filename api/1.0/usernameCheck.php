@@ -23,7 +23,7 @@ $input = json_decode($inputJSON, TRUE); //convert JSON into array
 // Check is supplied input is JSON
 if ($input === null) {
   print '{"error":"JSON Decode error"}';
-  exit()
+  exit();
 }
 
 // Check is username to test was supplied
@@ -36,8 +36,10 @@ if (!isset($input['username'])) {
 // two accounts with the same username were created
 if (numPrepare($mysqli, "SELECT email FROM users WHERE email = ?;", array("s", $input['username'])) > 0) {
   print '{"result":"taken"}';
+  exit();
 }
 else {
   print '{"result":"available"}';
+  exit();
 }
 ?>
