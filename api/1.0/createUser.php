@@ -26,7 +26,7 @@ if (isset($_SERVER['HTTP_SIGNATURE'])) {
       }
       else {
         // TODO: Split this for readability
-        $result = execPrepare($mysqli, "INSERT INTO users (email, algo, salt, iterations, hash, privs) VALUES (?, ?, ?, ?, ?, ?);", array("sssisi", $email, $algo, $salt, $iterations, $hash, $privs)
+        $result = execPrepare($mysqli, "INSERT INTO users (email, algo, salt, iterations, hash, privs) VALUES (?, ?, ?, ?, ?, ?);", array("sssisi", $email, $algo, $salt, $iterations, $hash, $privs));
         print '{"result":"created"}';
       }
     }
