@@ -11,7 +11,7 @@ if (!isset($_SERVER['HTTP_SIGNATURE'])) {
 }
 
 $inputJSON = file_get_contents('php://input');
-if ($_SERVER['HTTP_SIGNATURE'] == hash_hmac('sha3-512' , $inputJSON , $apiHMAC)) {
+if ($_SERVER['HTTP_SIGNATURE'] != hash_hmac('sha3-512' , $inputJSON , $apiHMAC)) {
   print '{"error":"Signature mismatch"}';
   exit();
 }

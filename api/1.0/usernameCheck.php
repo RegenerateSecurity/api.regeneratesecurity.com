@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 include_once $_SERVER['DOCUMENT_ROOT'] .  '/hmac.php';		// Load the HMAC key ($apiHMAC) to validate frontend requests
 include_once $_SERVER['DOCUMENT_ROOT'] .  '/auth.php';		// Load a connection to the DB
-include_once $_SERVER['DOCUMENT_ROOT'] .  '/functions.php';	// functoin abstractions to clean up code
+include_once $_SERVER['DOCUMENT_ROOT'] .  '/functions.php';	// function abstractions to clean up code
 
 // If no signature was supplied then refuse to respond.
 if (!isset($_SERVER['HTTP_SIGNATURE'])) {
@@ -13,7 +13,7 @@ if (!isset($_SERVER['HTTP_SIGNATURE'])) {
 
 $inputJSON = file_get_contents('php://input');
 // Check if supplied signature and generated signature match
-if ($_SERVER['HTTP_SIGNATURE'] == hash_hmac('sha3-512', $inputJSON, $apiHMAC)) {
+if ($_SERVER['HTTP_SIGNATURE'] != hash_hmac('sha3-512', $inputJSON, $apiHMAC)) {
   print '{"error":"Signature mismatch"}';
   exit();
 }
