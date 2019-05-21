@@ -12,15 +12,14 @@ if (!isset($_SERVER['HTTP_SIGNATURE'])) {
 }
 
 $inputJSON = file_get_contents('php://input');
-$inputSignature = hash_hmac('sha3-512' , $inputJSON , $apiHMAC);
-$input = json_decode($inputJSON, TRUE); //convert JSON into array
-
 // Check if supplied signature and generated signature match
 if ($_SERVER['HTTP_SIGNATURE'] == hash_hmac('sha3-512', $inputJSON, $apiHMAC)) {
   print '{"error":"Signature mismatch"}';
   exit();
 }
 
+// Moved deserialisation to post signature check...just in case
+$input = json_decode($inputJSON, TRUE); //convert JSON into array
 // Check is supplied input is JSON
 if ($input === null) {
   print '{"error":"JSON Decode error"}';
