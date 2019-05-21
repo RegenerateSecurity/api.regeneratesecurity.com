@@ -12,7 +12,7 @@ if (isset($_SERVER['HTTP_SIGNATURE'])) {
     if ($input === null) {
       print '{"error":"JSON Decode error"}';
     }
-    else if (isset($input['username'] and isset($input["password"]))) {
+    else if (isset($input['username']) and isset($input["password"])) {
       $email      = $input['username'];
       $password   = $input['password'];
       $salt       = openssl_random_pseudo_bytes(64);
