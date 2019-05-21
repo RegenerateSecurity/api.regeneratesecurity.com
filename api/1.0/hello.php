@@ -10,7 +10,7 @@ if (isset($_SERVER['HTTP_SIGNATURE'])) {
     if ($input === null) {
       print '{"error":"JSON Decode error"}';
     }
-    else if ($input['ping'] == "hello") {
+    else if (isset($input['ping']) and $input['ping'] == "hello") {
       print '{"ping":"olleh"}';
     }
     else {

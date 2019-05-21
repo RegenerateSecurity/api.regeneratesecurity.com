@@ -23,13 +23,13 @@ if ($input === null) {
   exit();
 }
 
-if (isset($input['username']) or $input['username'] == "") {
+if (!isset($input['username']) or $input['username'] == "") {
   print '{"error":"Expected username"}';
   exit();
 }
 
 // TODO: Fix, impose password policy
-if (isset($input['password']) or $input['password'] == "") {
+if (!isset($input['password']) or $input['password'] == "") {
   print '{"error":"Expected password"}';
   exit();
 }
