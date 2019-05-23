@@ -28,13 +28,19 @@ if (!isset($input['token']) or $input['token'] == "") {
   exit();
 }
 
-$t = time();
-// TODO: Consider using numPrepare then execPrepare?
+if (numPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
 $result = execPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token']));
+// TODO: Clean up data out of the db
 $row = $result->fetch_assoc();
-print "<br>Session Check<br>";
-print 'email: '    . htmlspecialchars($row['email']);
-print 'session: '  . htmlspecialchars($row['session']);
-print 'activity: ' . htmlspecialchars($row['activity']);
-print 'time:' . time();
+// TODO: check time against activity for validity
+$t = time();
+// TODO: build JSON properly
+print '{"result":"valid", "email":"' . $row['email'] . '","activity":"' . $row['activity'] . '"}';
+
+}
+else {
+  print '{"result":"invalid"}';
+}
+
+
 ?>
