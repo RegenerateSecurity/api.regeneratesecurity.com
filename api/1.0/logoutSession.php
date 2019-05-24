@@ -30,7 +30,6 @@ if (!isset($input['token']) or $input['token'] == "") {
 }
 
 if (numPrepare($mysqli, "SELECT email FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
-
   execPrepare($mysqli, "UPDATE users SET session = '' WHERE session = ?;", array("s", $input['token']));
   print '{"result" :"logged out"}';
 }

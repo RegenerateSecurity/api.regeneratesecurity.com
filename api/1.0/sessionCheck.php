@@ -33,9 +33,9 @@ if (numPrepare($mysqli, "SELECT email FROM users WHERE session = ?;", array("s",
   // TODO: Clean up data out of the db
   $row = $result->fetch_assoc();
   // TODO: check time against activity for validity
+  $t = time();
   if ($t - $row['activity'] < 21600) {
     print '{"result" :"valid","email" :"' . $row['email'] . '","activity":' . $row['activity'] . ',"privs":"' . $row['privs'] . '"}';
-    $t = time();
     execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token']));
   }
   else {
