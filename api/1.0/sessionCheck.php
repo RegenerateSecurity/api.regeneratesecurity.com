@@ -35,7 +35,7 @@ if (numPrepare($mysqli, "SELECT email,session,activity,privs FROM users WHERE se
   // TODO: check time against activity for validity
   if ($t - $row['activity'] < 21600) {
     // TODO: build JSON properly
-    print '{"result" :"valid","email" :"' . $row['email'] . '","activity":' . $row['activity'] . ',"privileges":"' . $row['privs'] . '"}';
+    print '{"result" :"valid","email" :"' . $row['email'] . '","activity":' . $row['activity'] . ',"privs":"' . $row['privs'] . '"}';
     $t = time();
     execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token']));
   }
