@@ -28,16 +28,16 @@ if (!isset($input['token']) or $input['token'] == "") {
   exit();
 }
 
-if (numPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
+if (numPrepare($mysqli, "SELECT email,session,activity,privs FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
   $result = execPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token']));
   // TODO: Clean up data out of the db
   $row = $result->fetch_assoc();
   // TODO: check time against activity for validity
-  $t = time();
   if ($t - $row['activity'] < 21600) {
     // TODO: build JSON properly
-    print '{"result":"valid", "email":"' . $row['email'] . '","activity":"' . $row['activity'] . '"}';
-    // TODO: update activity
+    print '{"result":"valid", "email":"' . $row['email'] . '","activity":' . $row['activity'] . ',"privileges":"' . $row['privs'] . '"}';
+    $t = time();
+    execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token'])
   }
   else {
     print '{"result":"expired"}';
