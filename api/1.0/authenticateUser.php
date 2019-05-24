@@ -47,7 +47,7 @@ if (numPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $emai
   $iter      = $row['iterations'];
   $hash      = $row['hash'];
   $privs     = $row['privs'];
-  $checkhash = hash_pbkdf2('sha3-512', $_POST['password'], $salt , $iter);
+  $checkhash = hash_pbkdf2('sha3-512', $password, $salt , $iter);
   $activity  = time();
 
   if ($hash == $checkhash) {
@@ -59,5 +59,9 @@ if (numPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $emai
     print '{"error":"Invalid credentials"}';
     exit();
   }
+}
+else {
+    print '{"error":"Invalid credentials"}';
+    exit();
 }
 ?>
