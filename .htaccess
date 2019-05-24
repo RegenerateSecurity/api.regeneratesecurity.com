@@ -16,5 +16,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^api\/1.0\/sessionCheck\/$ /api/1.0/sessionCheck.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api\/1.0\/logoutSession\/$ /api/1.0/logoutSession.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^api\/1.0\/authenticateUser\/$ /api/1.0/authenticateUser.php [L]
 

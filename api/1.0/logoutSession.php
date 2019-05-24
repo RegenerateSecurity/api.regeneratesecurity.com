@@ -1,4 +1,5 @@
 <?php
+// TODO: Make JSON properly
 // Output on this page will be JSON, so let the requester know
 header('Content-Type: application/json');
 include_once $_SERVER['DOCUMENT_ROOT'] .  '/hmac.php';          // Load the HMAC key ($apiHMAC) to validate frontend requests
@@ -29,18 +30,9 @@ if (!isset($input['token']) or $input['token'] == "") {
 }
 
 if (numPrepare($mysqli, "SELECT email FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
-  $result = execPrepare($mysqli, "SELECT email,session,activity,privs FROM users WHERE session = ?;", array("s", $input['token']));
-  // TODO: Clean up data out of the db
-  $row = $result->fetch_assoc();
-  // TODO: check time against activity for validity
-  if ($t - $row['activity'] < 21600) {
-    print '{"result" :"valid","email" :"' . $row['email'] . '","activity":' . $row['activity'] . ',"privs":"' . $row['privs'] . '"}';
-    $t = time();
-    execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token']));
-  }
-  else {
-    print '{"result":"expired"}';
-  }
+
+  execPrepare($mysqli, "UPDATE users SET session = '' WHERE session = ?;", array("s", $input['token']));
+  print '{"result" :"logged out"}';
 }
 else {
   print '{"result":"invalid"}';
