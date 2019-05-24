@@ -34,32 +34,30 @@ if (!isset($input['password']) or $input['password'] == "") {
 }
 
 $token    = hash('sha3-512', random_bytes(128));
-$email    = $input['email'];
+$email    = $input['username'];
 $password = $input['password'];
 
 // TODO: Consider using numPrepare then execPrepare?
-$result = execPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $email));
-$row = $result->fetch_assoc();
-if ($row['email'] != $email) {
-  print '{"error":"Invalid credentials"}';
-  exit();
-}
+if (numPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $email)) == 1) {
+  $result = execPrepare($mysqli, "SELECT * FROM users WHERE email = ?;", array("s", $email));
+  $row = $result->fetch_assoc();
 
-$algo      = $row['algo'];
-$salt      = $row['salt'];
-$iter      = $row['iterations'];
-$hash      = $row['hash'];
-$privs     = $row['privs'];
-$checkhash = hash_pbkdf2('sha3-512', $_POST['password'], $salt , $iter);
-$activity  = time();
+  $algo      = $row['algo'];
+  $salt      = $row['salt'];
+  $iter      = $row['iterations'];
+  $hash      = $row['hash'];
+  $privs     = $row['privs'];
+  $checkhash = hash_pbkdf2('sha3-512', $_POST['password'], $salt , $iter);
+  $activity  = time();
 
-if ($hash == $checkhash) {
-  $result = execPrepare($mysqli, "UPDATE users SET session = ?, activity = ? WHERE email = ?;", array("sis", $token, $activity, $email));
-  print '{"token":"' . $token . '"}';
-  exit();
-}
-else {
-  print '{"error":"Invalid credentials"}';
-  exit();
+  if ($hash == $checkhash) {
+    execPrepare($mysqli, "UPDATE users SET session = ?, activity = ? WHERE email = ?;", array("sis", $token, $activity, $email));
+    print '{"token":"' . $token . '"}';
+    exit();
+  }
+  else {
+    print '{"error":"Invalid credentials"}';
+    exit();
+  }
 }
 ?>
