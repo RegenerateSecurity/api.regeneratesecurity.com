@@ -37,7 +37,7 @@ if (numPrepare($mysqli, "SELECT email,session,activity,privs FROM users WHERE se
     // TODO: build JSON properly
     print '{"result":"valid", "email":"' . $row['email'] . '","activity":' . $row['activity'] . ',"privileges":"' . $row['privs'] . '"}';
     $t = time();
-    execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token'])
+    execPrepare($mysqli, "UPDATE users SET activity = ? WHERE session = ?;", array("is", $t, $input['token']));
   }
   else {
     print '{"result":"expired"}';
