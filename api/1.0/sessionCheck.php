@@ -29,14 +29,19 @@ if (!isset($input['token']) or $input['token'] == "") {
 }
 
 if (numPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token'])) == 1) {
-$result = execPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token']));
-// TODO: Clean up data out of the db
-$row = $result->fetch_assoc();
-// TODO: check time against activity for validity
-$t = time();
-// TODO: build JSON properly
-print '{"result":"valid", "email":"' . $row['email'] . '","activity":"' . $row['activity'] . '"}';
-
+  $result = execPrepare($mysqli, "SELECT email,session,activity FROM users WHERE session = ?;", array("s", $input['token']));
+  // TODO: Clean up data out of the db
+  $row = $result->fetch_assoc();
+  // TODO: check time against activity for validity
+  $t = time();
+  if ($t - $row['activity'] < 21600) {
+    // TODO: build JSON properly
+    print '{"result":"valid", "email":"' . $row['email'] . '","activity":"' . $row['activity'] . '"}';
+    // TODO: update activity
+  }
+  else {
+    print '{"result":"expired"}';
+  }
 }
 else {
   print '{"result":"invalid"}';
